@@ -1,0 +1,39 @@
+#!/usr/bin/with-contenv bash
+
+set -ex
+
+# default values
+export TRANSMISSION_CONFIG=${TRANSMISSION_CONFIG-/config}
+export TRANSMISSION_WATCH=${TRANSMISSION_WATCH-/watch}
+export TRANSMISSION_COMPLETE=${TRANSMISSION_COMPLETE-/downloads/complete}
+export TRANSMISSION_INCOMPLETE=${TRANSMISSION_INCOMPLETE-/downloads/incomplete}
+export TRANSMISSION_PEER_PORT=${TRANSMISSION_PEER_PORT-51413}
+export TRANSMISSION_HTTP_PORT=${TRANSMISSION_HTTP_PORT-9091}
+export TRANSMISSION_USERNAME=${TRANSMISSION_USERNAME-user}
+export TRANSMISSION_PASSWORD=${TRANSMISSION_PASSWORD-changeme}
+export TRANSMISSION_FLAGS="--log-error ${TRANSMISSION_FLAGS}"
+
+# add/replace constant config settings
+echo "Merging config file"
+jq -s '.[0] * .[1]' /config/settings.json /defaults/settings.json > /config/settings.json.new
+rm /config/settings.json && mv /config/settings.json.new /config/settings.json
+
+if [ ! -z ${TRANSMISSION_AUTH+x} ]
+then
+    TRANSMISSION_FLAGS="${TRANSMISSION_FLAGS} --auth"
+else
+    TRANSMISSION_FLAGS="${TRANSMISSION_FLAGS} --no-auth"
+fi
+
+echo "Starting transmission daemon."
+exec \
+    s6-setuidgid abc /usr/bin/transmission-daemon \
+    --foreground ${TRANSMISSION_FLAGS} \
+    --config-dir "${TRANSMISSION_CONFIG}" \
+    --watch-dir "${TRANSMISSION_WATCH}" \
+    --download-dir "${TRANSMISSION_COMPLETE}" \
+    --incomplete-dir "${TRANSMISSION_INCOMPLETE}" \
+    --peerport "${TRANSMISSION_PEER_PORT}" \
+    --port "${TRANSMISSION_HTTP_PORT}" \
+    --username "${TRANSMISSION_USERNAME}" \
+    --password "${TRANSMISSION_PASSWORD}"

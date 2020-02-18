@@ -1,0 +1,34 @@
+{
+    "upload-slots-per-torrent": 20,
+
+    "preallocation": 1,
+    "rename-partial-files": true,
+    "start-added-torrents": true,
+    "trash-original-torrent-files": false,
+
+    "cache-size-mb": 4,
+    "dht-enabled": true,
+    "encryption": 1,
+    "message-level": 2,
+    "pex-enabled": true,
+    "prefetch-enabled": 1,
+    "scrape-paused-torrents-enabled": true,
+    "script-torrent-done-enabled": true,
+    "script-torrent-done-filename": "/completed.sh",
+    "utp-enabled": true,
+
+    "bind-address-ipv4": "0.0.0.0",
+    "bind-address-ipv6": "::",
+    "rpc-host-whitelist-enabled": false,
+    "peer-id-ttl-hours": 6,
+    "peer-limit-global": 10000,
+    "peer-limit-per-torrent": 200,
+    "peer-socket-tos": "throughput",
+
+    "port-forwarding-enabled": false,
+
+    "download-queue-enabled": true,
+    "download-queue-size": 5,
+    "queue-stalled-enabled": true,
+    "queue-stalled-minutes": 10
+}
