@@ -20,6 +20,7 @@
     "bind-address-ipv4": "0.0.0.0",
     "bind-address-ipv6": "::",
     "rpc-host-whitelist-enabled": false,
+    "rpc-whitelist-enabled": false,
     "peer-id-ttl-hours": 6,
     "peer-limit-global": 10000,
     "peer-limit-per-torrent": 200,
